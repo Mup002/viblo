@@ -21,7 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'],function(){
 
+    //user
     Route::get('users/getAll',['uses' => 'UserController@getAllUser']);
-    // Route::post('posts/bulk',['uses' => 'PostController@bulkStore']);
-    // Route::post('posts/create',['uses'=>'PostController@create']);
+    
+    //article
+    Route::get('article/getLatestArticles',['uses' => 'ArticleController@getLatestArticle']);
 });
