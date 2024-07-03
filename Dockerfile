@@ -1,5 +1,5 @@
 FROM php:8.3-fpm
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+# COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY composer.lock composer.json /var/www/
 WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd
-
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY . /var/www
 EXPOSE 9000
 CMD ["php-fpm"]
