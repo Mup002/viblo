@@ -10,23 +10,35 @@ class ArticleController extends Controller
 {
     //
     protected $articleService;
-    public function __construct(ArticleService $articleService){
+
+    public function __construct(ArticleService $articleService)
+    {
         return $this->articleService = $articleService;
     }
-    public function getLatestArticle(Request $request){
-        $page = $request->query('page',1);
-        $rs = ['status' => 200];
-        try{
-            $rs['data'] = $this -> articleService->getLatestArticle($page);
-        }catch(Exception $e){
-            $rs = [
-                'status' => 500,
-                'error' => $e->getMessage()
-            ];
+
+    public function getLatestArticle(Request $request)
+    {
+        $page = $request->query('page', 1);
+        try {
+            $data = $this->articleService->getLatestArticle($page);
+            $data = $this->articleService->getLatestArticle($page);
+            return response()->json($data, 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        return response()->json($rs,$rs['status']);
     }
 }
+// public function getLatestArticle(Request $request)
+// {
+//     $page = $request->query('page', 1);
+//     try {
+//         $data = $this->articleService->getLatestArticle($page);
+//         return response()->json($data, 200);
+//     } catch (Exception $e) {
+//         return response()->json(['error' => $e->getMessage()], 500);
+//     }
+// }
+
 //  $result  = ['status' => 200];
 //         try{
 //             $result['data'] = $this -> userService->getAllUser();
