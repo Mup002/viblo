@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasFactory;
-    
     public $timestamp = true;
+    protected $primaryKey = 'article_id';
     public function bookmarks(){
         return $this->hasMany(Bookmark::class);
     }
@@ -17,13 +17,13 @@ class Article extends Model
         return $this->belongsTo(Serie::class);
     }
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','user_id');
     }
 
     public function articleRequest(){
         return $this->hasOne(ArticleRequest::class);
     }
     public function tags(){
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class,'article_tag', 'article_id','tag_id');
     }
 }

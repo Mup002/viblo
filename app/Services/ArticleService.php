@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Http\Resources\ArticleInfoResource;
 use App\Repositories\ArticleRepository;
 
 class ArticleService
@@ -11,6 +12,8 @@ class ArticleService
         $this->articleRepo = $articleRepository;
     }
     public function getLatestArticle($page){
-        return $this->articleRepo->getLatestArticle($page);
+        $articles = $this->articleRepo->getLatestArticle($page);
+        $articleResource = ArticleInfoResource::collection($articles);
+        return $articleResource;
     }
 }

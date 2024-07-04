@@ -12,6 +12,6 @@ class Question extends Model
         return $this->belongsToMany(Tag::class);
     }
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,"user_id","user_id");
     }
 }

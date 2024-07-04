@@ -11,8 +11,8 @@ class ArticleRepository
         $this->article = $article;
     }
     public function getLatestArticle($page = 1, $perpage = 20){
-        return Article::orderBy(
-            'created_at','desc'
-        )->paginate($perpage,['*'],'page',$page);
+        return Article::with('tags')
+        ->orderBy('created_at','desc' )
+        ->paginate($perpage,['*'],'page',$page);
     }
 }

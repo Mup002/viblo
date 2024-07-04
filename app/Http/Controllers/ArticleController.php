@@ -13,7 +13,7 @@ class ArticleController extends Controller
 
     public function __construct(ArticleService $articleService)
     {
-        return $this->articleService = $articleService;
+        $this->articleService = $articleService;
     }
 
     public function getLatestArticle(Request $request)

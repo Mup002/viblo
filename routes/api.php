@@ -23,7 +23,10 @@ Route::group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'],function()
 
     //user
     Route::get('users/getAll',['uses' => 'UserController@getAllUser']);
-    
+
     //article
     Route::get('article/getLatestArticles',['uses' => 'ArticleController@getLatestArticle']);
+
+    //question
+    Route::get('question/getThreeLatestQuestions',['uses'=>'QuestionController@getThreeQuestionsLatest']);
 });
