@@ -21,8 +21,19 @@ class ArticleController extends Controller
         $page = $request->query('page', 1);
         try {
             $data = $this->articleService->getLatestArticle($page);
-            $data = $this->articleService->getLatestArticle($page);
-            return response()->json($data, 200);
+            $paginationInfo = [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' =>$data->perPage(),
+                'total' => $data->total(),
+            ];
+            $article = $data->items();
+
+            $rs = [
+                'page' => $paginationInfo,
+                'article' => $article
+            ];
+            return response()->json($rs, 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

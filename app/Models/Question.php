@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'question_id';
     public function tags(){
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class,'tag_question','question_id','tag_id');
     }
     public function user(){
         return $this->belongsTo(User::class,"user_id","user_id");

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,7 @@ Route::group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'],function()
 
     //question
     Route::get('question/getThreeLatestQuestions',['uses'=>'QuestionController@getThreeQuestionsLatest']);
+
+    //serie
+    Route::get('series/getSeriesByPage',['uses'=>'SerieController@getAllSerieByPage']);
 });

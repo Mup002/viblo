@@ -14,7 +14,7 @@ class Article extends Model
         return $this->hasMany(Bookmark::class);
     }
     public function serie(){
-        return $this->belongsTo(Serie::class);
+        return $this->belongsTo(Serie::class, 'serie_id','serie_id');
     }
     public function user(){
         return $this->belongsTo(User::class,'user_id','user_id');

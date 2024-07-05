@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('title');
             $table->text('description')->nullable();
             // quyen rieng tu
-            $table->enum('privacy',['public','private','anyone','schedule'])->default('public');
+            // $table->enum('privacy',['public','private','anyone','schedule'])->default('public');
             // so luong bai viet trong serue nay
             $table->integer('articles');
             // viet tat cho title

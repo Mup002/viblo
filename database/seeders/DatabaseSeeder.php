@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             // TagSeeder::class
             // ArticleTagSeeder::class
             // TagQuestionSeeder::class
-            UpdateUrlUser::class
+            // UpdateUrlUser::class
+            SerieTagSeeder::class
         ]);
     }
 }
