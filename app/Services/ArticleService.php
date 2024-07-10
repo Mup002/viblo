@@ -16,4 +16,7 @@ class ArticleService
         $articleResource = ArticleInfoResource::collection($articles);
         return $articleResource;
     }
+    public function getArticleByTagId($tagId){
+        return ArticleInfoResource::collection($this->articleRepo->getArticlesByTagId($tagId));
+    }
 }

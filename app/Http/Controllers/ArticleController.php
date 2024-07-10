@@ -16,6 +16,7 @@ class ArticleController extends Controller
         $this->articleService = $articleService;
     }
 
+
     public function getLatestArticle(Request $request)
     {
         $page = $request->query('page', 1);
@@ -38,25 +39,31 @@ class ArticleController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-}
-// public function getLatestArticle(Request $request)
-// {
-//     $page = $request->query('page', 1);
-//     try {
-//         $data = $this->articleService->getLatestArticle($page);
-//         return response()->json($data, 200);
-//     } catch (Exception $e) {
-//         return response()->json(['error' => $e->getMessage()], 500);
-//     }
-// }
 
-//  $result  = ['status' => 200];
-//         try{
-//             $result['data'] = $this -> userService->getAllUser();
-//         }catch(Exception $e){
-//             $result = [
-//                 'status' => 500,
-//                 'error'=> $e->getMessage()
-//             ];
-//         }
-//         return response()->json($result,$result['status']);
+    public function getArticlesByTagId(Request $request){
+        $page = $request->query('page',1);
+        $tagId = $request->query('tagId');
+        try
+        {
+            $data = $this->articleService->getArticleByTagId($tagId,$page);
+            $paginationInfo = [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total()
+            ];
+            $article = $data->items();
+            $rs = [
+                'page' => $paginationInfo,
+                'article' => $article
+            ];
+
+            return response()->json($rs,200);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['error'=>$e->getMessage()],200);
+        }
+    }
+
+}

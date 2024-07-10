@@ -17,7 +17,12 @@ class DatabaseSeeder extends Seeder
             // ArticleTagSeeder::class
             // TagQuestionSeeder::class
             // UpdateUrlUser::class
-            SerieTagSeeder::class
+            // SerieTagSeeder::class
+            // UpdateTagArticle::class
+            // UserRoleSeeder::class
+            // PermissionSeeder::class
+            PermissionRole::class
         ]);
     }
 }
+

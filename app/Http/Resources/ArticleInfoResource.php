@@ -11,9 +11,9 @@ class ArticleInfoResource extends JsonResource
     {
         $data = parent::toArray($request);
         $data['user'] = new UserArticleInfoResource($this->user);
-        $data['tags'] = TagResource::collection($this->tags);
-        // dd($this->tags);
+
+        $sortedTags = $this->tags()->orderByDesc('id')->get();
+        $data['tags'] = TagResource::collection($sortedTags);
         return $data;
     }
 }
-

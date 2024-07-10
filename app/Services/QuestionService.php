@@ -15,4 +15,5 @@ class QuestionService
         $questionResource = QuestionInfoResource::collection($question);
         return $questionResource;
     }
+   
 }

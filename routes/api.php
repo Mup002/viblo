@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\SerieController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,22 +16,29 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+//     Route::post('login', [AuthController::class, 'login']);
+// });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('admin/getUsers', [UserController::class,'getAllUser'])
+    ->middleware('permission:users-all|users-view');
 });
 
-Route::group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'],function(){
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
 
     //user
-    Route::get('users/getAll',['uses' => 'UserController@getAllUser']);
-
+    // Route::get('users/getAll', ['uses' => 'UserController@getAllUser']);
+    Route::post('login', ['uses'=>'AuthController@login']);
+    Route::post('register',['uses'=>'AuthController@register']);
     //article
-    Route::get('article/getLatestArticles',['uses' => 'ArticleController@getLatestArticle']);
+    Route::get('article/getLatestArticles', ['uses' => 'ArticleController@getLatestArticle']);
+    Route::get('article/getArticlesByTagId', ['uses' => 'ArticleController@getArticlesByTagId']);
 
     //question
-    Route::get('question/getThreeLatestQuestions',['uses'=>'QuestionController@getThreeQuestionsLatest']);
+    Route::get('question/getThreeLatestQuestions', ['uses' => 'QuestionController@getThreeQuestionsLatest']);
 
     //serie
-    Route::get('series/getSeriesByPage',['uses'=>'SerieController@getAllSerieByPage']);
+    Route::get('series/getSeriesByPage', ['uses' => 'SerieController@getAllSerieByPage']);
 });

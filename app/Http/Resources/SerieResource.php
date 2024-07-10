@@ -16,6 +16,7 @@ class SerieResource extends JsonResource
     {
         $data = parent::toArray($request);
         $data['tags'] = TagResource::collection($this->tags);
+        $data['user'] = new UserQuestionResource($this->user);
         return $data;
     }
 }
