@@ -66,4 +66,23 @@ class ArticleController extends Controller
         }
     }
 
+    public function getArticleByFollower(Request $request){
+        $page = $request->query('page',1);
+        $userId = $request->query('userId');
+        $data = $this->articleService->getArticleByFollower($userId,$page);
+        $paginationInfo = [
+            'current_page' => $data->currentPage(),
+            'last_page' => $data->lastPage(),
+            'per_page' => $data->perPage(),
+            'total' => $data->total()
+        ];
+
+        $rs = [
+            'page' => $paginationInfo,
+            'article' => $data
+        ];
+
+        return response()->json($rs,200);
+    }
+
 }

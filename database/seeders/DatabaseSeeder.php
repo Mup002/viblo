@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             // UpdateTagArticle::class
             // UserRoleSeeder::class
             // PermissionSeeder::class
-            PermissionRole::class
+            // PermissionRole::class
+            FollowerSeeder::class
+
         ]);
     }
 }

@@ -22,8 +22,8 @@ class PermissionRole extends Seeder
     public function run(): void
     {
         //
-        $permissions = $this->permission::all();
-        $role =  $this->role->find(2);
+        $permissions = $this->permission->whereBetween('permission_id',[2,5])->get();
+        $role =  $this->role->find(1);
 
         foreach($permissions as $permissions)
         {

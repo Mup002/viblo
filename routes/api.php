@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -24,6 +26,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('admin/getUsers', [UserController::class,'getAllUser'])
     ->middleware('permission:users-all|users-view');
+
+    Route::get('user/getArticlesByFollowers',[ArticleController::class,'getArticleByFollower'])
+    ->middleware('permission:users-all|users-view');
+
+    Route::get('user/follows',[FollowerController::class,'updateFollow'])
+    ->middleware('permission:users-all|users-edit');
 });
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {

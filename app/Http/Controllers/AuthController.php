@@ -36,6 +36,11 @@ class AuthController extends Controller
                 'status_code' => 200,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                'user'=>[
+                    'avt_url' => $user->avt_url,
+                    'username'=>$user->username,
+                    'display_name'=> '@' . $user->display_name
+                ]
             ]);
         } catch (Exception $e) {
             dd($e);

@@ -1,17 +1,19 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Models\User;
 
 class UserService
 {
-    protected $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this-> userRepository = $userRepository;
+    protected $user;
+    public function __construct(User $user){
+        $this->user = $user;
     }
     public function getAllUser(){
-        return $this->userRepository->getAll();
+        return $this->user->all();
+    }
+
+    public function getProfile(){
+       
     }
 }
