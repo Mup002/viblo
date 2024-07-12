@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -30,7 +31,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user/getArticlesByFollowers',[ArticleController::class,'getArticleByFollower'])
     ->middleware('permission:users-all|users-view');
 
-    Route::get('user/follows',[FollowerController::class,'updateFollow'])
+    Route::post('user/follows',[FollowerController::class,'updateFollow'])
+    ->middleware('permission:users-all|users-edit');
+
+    Route::get('user/bookmarks',[ArticleController::class,'getArticleByBookmark'])
+    ->middleware('permission:users-all|users-view');
+
+    Route::post('user/updateBookmark',[BookmarkController::class,'updateBookmark'])
     ->middleware('permission:users-all|users-edit');
 });
 

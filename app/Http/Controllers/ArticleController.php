@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ArticleService;
 use Exception;
 use Illuminate\Http\Request;
-
+use App\Http\Helpers\PaginateHelper;
 class ArticleController extends Controller
 {
     //
@@ -22,16 +22,10 @@ class ArticleController extends Controller
         $page = $request->query('page', 1);
         try {
             $data = $this->articleService->getLatestArticle($page);
-            $paginationInfo = [
-                'current_page' => $data->currentPage(),
-                'last_page' => $data->lastPage(),
-                'per_page' =>$data->perPage(),
-                'total' => $data->total(),
-            ];
-            $article = $data->items();
+                       $article = $data->items();
 
             $rs = [
-                'page' => $paginationInfo,
+                'page' => PaginateHelper::paginate($data),
                 'article' => $article
             ];
             return response()->json($rs, 200);
@@ -46,15 +40,10 @@ class ArticleController extends Controller
         try
         {
             $data = $this->articleService->getArticleByTagId($tagId,$page);
-            $paginationInfo = [
-                'current_page' => $data->currentPage(),
-                'last_page' => $data->lastPage(),
-                'per_page' => $data->perPage(),
-                'total' => $data->total()
-            ];
+
             $article = $data->items();
             $rs = [
-                'page' => $paginationInfo,
+                'page' => PaginateHelper::paginate($data),
                 'article' => $article
             ];
 
@@ -70,16 +59,24 @@ class ArticleController extends Controller
         $page = $request->query('page',1);
         $userId = $request->query('userId');
         $data = $this->articleService->getArticleByFollower($userId,$page);
-        $paginationInfo = [
-            'current_page' => $data->currentPage(),
-            'last_page' => $data->lastPage(),
-            'per_page' => $data->perPage(),
-            'total' => $data->total()
-        ];
 
         $rs = [
-            'page' => $paginationInfo,
+            'page' => PaginateHelper::paginate($data),
             'article' => $data
+        ];
+
+        return response()->json($rs,200);
+    }
+
+    public function getArticleByBookmark(Request $request)
+    {
+        $userId = $request->query('userId');
+        $page = $request->query('page');
+        $data =  $this->articleService->getArticleByBookmark($userId,$page);
+
+        $rs = [
+            'page' => PaginateHelper::paginate($data),
+            'article' => $data->items()
         ];
 
         return response()->json($rs,200);

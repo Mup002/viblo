@@ -5,6 +5,7 @@ use App\Http\Resources\ArticleInfoResource;
 use App\Models\Article;
 use App\Models\Follower;
 use App\Models\User;
+use App\Models\Bookmark;
 use Illuminate\Pagination\LengthAwarePaginator;
 class ArticleService
 {
@@ -12,11 +13,13 @@ class ArticleService
     protected $article;
     protected $follower;
     protected $user;
-    public function __construct(Article $article,Follower $follower,User $user)
+    protected $bookmark;
+    public function __construct(Article $article,Follower $follower,User $user, Bookmark $bookmark)
     {
         $this->article = $article;
         $this->follower = $follower;
         $this->user = $user;
+        $this->bookmark =  $bookmark;
     }
     public function getLatestArticle($page){
         $perpage = 20;
@@ -54,6 +57,25 @@ class ArticleService
         return ArticleInfoResource::collection($paginatedArticles);
 
     }
+    public function getArticleByBookmark($userId, $page)
+    {
+        $perPage = 20;
+        $user =  $this->user->find($userId);
+        $bookmarks = $this ->bookmark->where('user_id',$user->user_id)->get();
+
+        $articles = collect();
+        foreach($bookmarks as $bookmark)
+        {
+            $article = $this->article->where('article_id',$bookmark->article_id)->get();
+            $articles = $articles->merge($article);
+        }
+
+        $sortedArticles = $articles->sortByDesc('created_at');
+        $paginateArticles = $this->paginate($sortedArticles,$perPage, $page);
+        return ArticleInfoResource::collection($paginateArticles);
+    }
+
+    //////////
     protected function paginate($items, $perPage, $page)
     {
         $offset = ($page - 1) * $perPage;

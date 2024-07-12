@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             // UserRoleSeeder::class
             // PermissionSeeder::class
             // PermissionRole::class
-            FollowerSeeder::class
+            // FollowerSeeder::class
+            BookmarkSeeder::class
 
         ]);
     }

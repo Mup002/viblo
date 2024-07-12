@@ -37,6 +37,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'user'=>[
+                    'user_id' => $user->user_id,
                     'avt_url' => $user->avt_url,
                     'username'=>$user->username,
                     'display_name'=> '@' . $user->display_name
