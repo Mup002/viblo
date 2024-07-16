@@ -36,7 +36,7 @@ class ArticleFactory extends Factory
            'title' => $title,
            'content' => $this -> faker -> paragraph(),
            'is_publish' => true,
-           'privacy' => 'Publish',
+           'privacy_id' => 1,
            'views' => $this -> faker -> numberBetween(50,100),
            'is_accept' => true,
            'slug' => $slug,

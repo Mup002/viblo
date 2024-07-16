@@ -28,9 +28,3 @@ return new class extends Migration
         //
     }
 };
-// Schema::create('tag_question', function (Blueprint $table) {
-//     $table->bigIncrements('id')->primaryKey();
-//     $table->foreignId('tag_id')->references('tag_id')->on('tags')->onDelete('cascade');
-//     $table->foreignId('question_id')->references('question_id')->on('questions')->onDelete('cascade');
-//     $table->timestamps();
-// });

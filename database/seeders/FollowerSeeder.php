@@ -15,12 +15,12 @@ class FollowerSeeder extends Seeder
     public function run(): void
     {
         //
-        $user168 = User::find(168);
+        $user1 = User::find(1);
         $followers = User::inRandomOrder()->limit(rand(10, 20))->get();
         foreach($followers as $follower)
         {
             DB::table('followers')->insert([
-                'user_id'=> $user168->user_id,
+                'user_id'=> $user1->user_id,
                 'follower_id' => $follower->user_id,
                 'created_at'=>now(),
                 'updated_at'=>now(),

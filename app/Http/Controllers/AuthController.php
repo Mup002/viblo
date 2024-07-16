@@ -23,7 +23,7 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'status_code' => 401,
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized...'
             ]);
         }
         $user = User::where('email',$request->email)->first();
@@ -31,10 +31,12 @@ class AuthController extends Controller
             throw new Exception('Error in login');
         }
         try {
-            $token = $user->createToken('api-token')->plainTextToken;
+            $token = $user->createToken('api-token');
+            $accessToken = $user->tokens()->where('name','api-token')->latest();
+            $accessToken->expires_at
             return response()->json([
                 'status_code' => 200,
-                'access_token' => $token,
+                'access_token' => $token->plainTextToken,
                 'token_type' => 'Bearer',
                 'user'=>[
                     'user_id' => $user->user_id,

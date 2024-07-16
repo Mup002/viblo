@@ -13,7 +13,7 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
         // Tag::factory()
         // ->count(30)
         // ->create();

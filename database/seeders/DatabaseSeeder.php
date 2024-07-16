@@ -12,19 +12,20 @@ class DatabaseSeeder extends Seeder
     {
         $this -> call([
             // RoleSeeder::class
-            // UserSeeder::class
+            UserSeeder::class
             // TagSeeder::class
-            // ArticleTagSeeder::class
-            // TagQuestionSeeder::class
-            // UpdateUrlUser::class
-            // SerieTagSeeder::class
+            // ArticleTagSeeder::class,
+            // TagQuestionSeeder::class,
+            // UpdateUrlUser::class,
+            // SerieTagSeeder::class,
             // UpdateTagArticle::class
             // UserRoleSeeder::class
             // PermissionSeeder::class
             // PermissionRole::class
             // FollowerSeeder::class
-            BookmarkSeeder::class
-
+            // BookmarkSeeder::class
+            // PrivacySeeder::class
+            // ArticlePrivacySeeder::class
         ]);
     }
 }

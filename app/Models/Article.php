@@ -20,10 +20,14 @@ class Article extends Model
         return $this->belongsTo(User::class,'user_id','user_id');
     }
 
+    
     public function articleRequest(){
         return $this->hasOne(ArticleRequest::class);
     }
     public function tags(){
         return $this->belongsToMany(Tag::class,'article_tag', 'article_id','tag_id');
+    }
+    public function privacy(){
+        return $this->belongsTo(Privacy::class,'privacy_id','privacy_id');
     }
 }

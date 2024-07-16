@@ -4,9 +4,8 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,30 +22,32 @@ use Illuminate\Support\Facades\Route;
 //     Route::post('login', [AuthController::class, 'login']);
 // });
 
-
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('admin/getUsers', [UserController::class,'getAllUser'])
-    ->middleware('permission:users-all|users-view');
+    Route::get('admin/getUsers', [UserController::class, 'getAllUser'])
+        ->middleware('permission:users-all|users-view');
 
-    Route::get('user/getArticlesByFollowers',[ArticleController::class,'getArticleByFollower'])
-    ->middleware('permission:users-all|users-view');
+    Route::get('user/getArticlesByFollowers', [ArticleController::class, 'getArticleByFollower'])
+        ->middleware('permission:users-all|users-view');
 
-    Route::post('user/follows',[FollowerController::class,'updateFollow'])
-    ->middleware('permission:users-all|users-edit');
+    Route::post('user/follows', [FollowerController::class, 'updateFollow'])
+        ->middleware('permission:users-all|users-edit');
 
-    Route::get('user/bookmarks',[ArticleController::class,'getArticleByBookmark'])
-    ->middleware('permission:users-all|users-view');
+    Route::get('user/bookmarks', [ArticleController::class, 'getArticleByBookmark'])
+        ->middleware('permission:users-all|users-view')->name('users.bookmarks');
 
-    Route::post('user/updateBookmark',[BookmarkController::class,'updateBookmark'])
-    ->middleware('permission:users-all|users-edit');
+    Route::post('user/updateBookmark', [BookmarkController::class, 'updateBookmark'])
+        ->middleware('permission:users-all|users-edit');
+
+    Route::get('user/privacies', [PrivacyController::class, 'getPrivacies'])
+        ->middleware('permission:users-all|users-view');
 });
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
 
     //user
     // Route::get('users/getAll', ['uses' => 'UserController@getAllUser']);
-    Route::post('login', ['uses'=>'AuthController@login']);
-    Route::post('register',['uses'=>'AuthController@register']);
+    Route::post('login', ['uses' => 'AuthController@login']);
+    Route::post('register', ['uses' => 'AuthController@register']);
     //article
     Route::get('article/getLatestArticles', ['uses' => 'ArticleController@getLatestArticle']);
     Route::get('article/getArticlesByTagId', ['uses' => 'ArticleController@getArticlesByTagId']);

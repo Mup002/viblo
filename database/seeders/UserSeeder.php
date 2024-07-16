@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Article;
+use App\Models\Question;
 use App\Models\Serie;
 use App\Models\Tag;
 use App\Models\User;
@@ -21,7 +22,7 @@ class UserSeeder extends Seeder
         // User::factory()
         // -> count(25)
         // ->hasArticles(random_int(5,10))
-        // ->create()
+        // ->create();
         // seeder_question_article
         // User::factory()
         // ->count(25)
@@ -33,25 +34,50 @@ class UserSeeder extends Seeder
         // ->has(Serie::factory()->count(1))
         // ->create();
 
-        $user = new User();
-        $user-> username = 'user1';
-        $user-> display_name = 'Mvu';
-        $user-> real_name = 'bui minh vu';
-        $user-> password =  Hash::make('1234');
-        $user->email = 'clonemup01@gmail.com';
-        $user->avt_url = 'https://www.facebook.com/groups/518282464857050/user/100078710535550/';
-        $user->role_id = 1;
-        $user->save();
+        // $user = new User();
+        // $user-> username = 'user1';
+        // $user-> display_name = 'Mvu';
+        // $user-> real_name = 'bui minh vu';
+        // $user-> password =  Hash::make('1234');
+        // $user->email = 'clonemup01@gmail.com';
+        // $user->avt_url = 'https://www.facebook.com/groups/518282464857050/user/100078710535550/';
+        // $user->role_id = 1;
+        // $user->save();
 
-        $articles = Article::factory()->count(rand(1,5))->create();
+        // $articles = Article::factory()->count(rand(1,5))->create();
 
-        $tags  = Tag::all();
+        // $tags  = Tag::all();
 
-        foreach($articles as $article)
+        // foreach($articles as $article)
+        // {
+        //     $user->articles()->save($article);
+        //     $randomTags = $tags->random(rand(3,5));
+        //     $article->tags()->attach($randomTags);
+        // }
+
+
+        $users = User::all();
+        $articles = Article::all();
+        $questions = Question::all();
+        foreach($users as $user)
         {
-            $user->articles()->save($article);
-            $randomTags = $tags->random(rand(3,5));
-            $article->tags()->attach($randomTags);
+            foreach($articles as $article)
+            {
+                if($article->user_id == $user->user_id)
+                {
+                    $user->increment('article');
+                }
+            }
+        }
+        foreach($users as $user)
+        {
+            foreach($questions as $question)
+            {
+                if($question->user_id == $user->user_id)
+                {
+                    $user->increment('question');
+                }
+            }
         }
     }
 }
