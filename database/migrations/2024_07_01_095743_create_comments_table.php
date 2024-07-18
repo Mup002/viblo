@@ -22,6 +22,7 @@ return new class extends Migration
             // neu trung ca type va id thi cmtrepply_id phai khac 0
             $table->bigInteger('cmtreply_id')->default(0);
             $table->integer('reputation_condition')->default(0);
+            $table->boolean('is_publish')->default(true);
             $table->timestamps();
         });
     }

@@ -102,5 +102,9 @@ class ArticleController extends Controller
         }
         return response()->json($this->articleService->updateArticle($request,$article));
     }
+    public function getArticle($address_url)
+    {
+        return response()->json($this->articleService->getArticleByUrl($address_url));
+    }
 
 }

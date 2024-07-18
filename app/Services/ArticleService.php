@@ -131,7 +131,12 @@ class ArticleService
     {
         return $this->article->findOrFail($articleId);
     }
-
+    public function getArticleByUrl($address_url)
+    {
+        $article = $this->article->where('slug',$address_url)->first();
+        $articleResoure = new ArticleInfoResource($article);
+        return $articleResoure;
+    }
     //////////
     protected function paginate($items, $perPage, $page)
     {

@@ -3,9 +3,11 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\UserController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,14 +40,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('user/updateBookmark', [BookmarkController::class, 'updateBookmark'])
         ->middleware('check.token.expiration','permission:users-all|users-edit');
 
-    // Route::get('user/privacies', [PrivacyController::class, 'getPrivacies'])
-    //     ->middleware('check.token.expiration','permission:users-all|users-view');
     Route::post('user/create/article',[ArticleController::class,'createArticleByUser'])
         ->middleware('check.token.expiration','permission:users-all|users-create');
 
     Route::put('user/upateArticle/{articleId}',[ArticleController::class,'updateArticle'])
         ->middleware('check.token.expiration','permission:users-all|users-edit');
 
+    Route::post('cmt/create',[CommentController::class,'createCmt'])
+        ->middleware('check.token.expiration','permission:users-all|users-create');
+
+    Route::put('cmt/update',[CommentController::class,'editCmt'])
+        ->middleware('check.token.expiration','permission:users-all|users-edit');
     Route::post('logout',[AuthController::class,'logout']);
 });
 
@@ -59,6 +64,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     //article
     Route::get('article/getLatestArticles', ['uses' => 'ArticleController@getLatestArticle']);
     Route::get('article/getArticlesByTagId', ['uses' => 'ArticleController@getArticlesByTagId']);
+    Route::get('article/{address_url}',['uses'=>'ArticleController@getArticle']);
 
     //question
     Route::get('question/getThreeLatestQuestions', ['uses' => 'QuestionController@getThreeQuestionsLatest']);
@@ -67,4 +73,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::get('series/getSeriesByPage', ['uses' => 'SerieController@getAllSerieByPage']);
     Route::get('privacies/all',['uses'=>'PrivacyController@getAll']);
     Route::post('check',['uses'=>'AuthController@checkToken']);
+
+
+    // comment
+    Route::get('comment/all',['uses'=>'CommentController@allCmt']);
 });

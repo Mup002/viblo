@@ -37,4 +37,9 @@ class Article extends Model
     public function privacy(){
         return $this->belongsTo(Privacy::class,'privacy_id','privacy_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class,'commentable');
+    }
 }

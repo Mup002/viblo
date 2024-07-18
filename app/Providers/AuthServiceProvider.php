@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Comment;
 use Gate;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -43,6 +44,15 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('accept-update',function(User $user, Article $article){
             return $user->roles()->where('roles.role_id',2)->exists();
+        });
+        Gate::define('write-comment',function(User $user){
+            return $user->roles()->exists();
+        });
+        Gate::define('edit-comment',function(User $user,Comment $comment){
+            if($user->roles()->exists() && $user->user_id == $comment->user_id){
+                return true;
+            }
+            return false;
         });
     }
 }
