@@ -16,9 +16,9 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->text('content');
             // loai doi tuong ma cmt nay hien thi : bai viet, cau hoi...
-            $table->string('cmtable_type');
+            $table->string('commentable_type');
             // id doi tuong ma cmt nay hien thi
-            $table->bigInteger('cmtable_id');
+            $table->bigInteger('commentable_id');
             // neu trung ca type va id thi cmtrepply_id phai khac 0
             $table->bigInteger('cmtreply_id')->default(0);
             $table->integer('reputation_condition')->default(0);
