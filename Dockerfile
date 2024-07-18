@@ -15,12 +15,15 @@ RUN apt-get update && apt-get install -y \
     git \
     libonig-dev \
     libzip-dev \
-    curl
+    curl\
+    procps\
+    cron
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd
 # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY . /var/www
+COPY crontab /etc/crontabs/root
 EXPOSE 9000
 CMD ["php-fpm"]
 

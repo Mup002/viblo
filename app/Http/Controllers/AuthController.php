@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
 class AuthController extends Controller
 {
     //
@@ -32,8 +33,9 @@ class AuthController extends Controller
         }
         try {
             $token = $user->createToken('api-token');
-            $accessToken = $user->tokens()->where('name','api-token')->latest();
-            $accessToken->expires_at
+            $accessToken = $user->tokens()->where('name','api-token')->latest()->first();
+            $accessToken->expires_at = now()->addMinutes(5);
+            $accessToken->save();
             return response()->json([
                 'status_code' => 200,
                 'access_token' => $token->plainTextToken,
@@ -46,7 +48,7 @@ class AuthController extends Controller
                 ]
             ]);
         } catch (Exception $e) {
-            dd($e);
+           
         }
     }
 
@@ -71,5 +73,28 @@ class AuthController extends Controller
         ];
         // return response()->json(['message'=>'created successfully'],200);
         return response()->json($data,201);
+    }
+    public function logout(Request $request)
+    {
+        auth()->user()->currentAccessToken()->delete();
+        return ['message'=>'U r logged out'];
+    }
+
+    public function checkToken(Request $request)
+    {
+        $token =  $request->bearerToken();
+        if($token)
+        {
+            $accessToken = PersonalAccessToken::findToken($token);
+            if($accessToken && $accessToken->expires_at && $accessToken->expires_at->isPast())
+            {
+                $accessToken->delete();
+                return response()->json(['status'=>'401'],401);
+            }else if(!$accessToken)
+            {
+                return response()->json(['status'=>'401'],401);
+            }
+            return response()->json(['status'=>'200'],200);
+        }
     }
 }

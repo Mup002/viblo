@@ -24,10 +24,10 @@ class UserSeeder extends Seeder
         // ->hasArticles(random_int(5,10))
         // ->create();
         // seeder_question_article
-        // User::factory()
-        // ->count(25)
-        // ->hasQuestions(random_int(0,3))
-        // ->create();
+        User::factory()
+        ->count(25)
+        ->hasQuestions(random_int(5,10))
+        ->create();
 
         // User::factory()
         // ->count(10)
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
         // $user-> password =  Hash::make('1234');
         // $user->email = 'clonemup01@gmail.com';
         // $user->avt_url = 'https://www.facebook.com/groups/518282464857050/user/100078710535550/';
-        // $user->role_id = 1;
+
         // $user->save();
 
         // $articles = Article::factory()->count(rand(1,5))->create();
@@ -55,29 +55,7 @@ class UserSeeder extends Seeder
         //     $article->tags()->attach($randomTags);
         // }
 
-
-        $users = User::all();
-        $articles = Article::all();
-        $questions = Question::all();
-        foreach($users as $user)
-        {
-            foreach($articles as $article)
-            {
-                if($article->user_id == $user->user_id)
-                {
-                    $user->increment('article');
-                }
-            }
-        }
-        foreach($users as $user)
-        {
-            foreach($questions as $question)
-            {
-                if($question->user_id == $user->user_id)
-                {
-                    $user->increment('question');
-                }
-            }
-        }
+    
+        
     }
 }

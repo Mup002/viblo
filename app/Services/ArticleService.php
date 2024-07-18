@@ -6,7 +6,11 @@ use App\Models\Article;
 use App\Models\Follower;
 use App\Models\User;
 use App\Models\Bookmark;
+use App\Models\Tag;
+use Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 class ArticleService
 {
 
@@ -14,12 +18,14 @@ class ArticleService
     protected $follower;
     protected $user;
     protected $bookmark;
-    public function __construct(Article $article,Follower $follower,User $user, Bookmark $bookmark)
+    protected $tag;
+    public function __construct(Article $article,Follower $follower,User $user, Bookmark $bookmark,Tag $tag)
     {
         $this->article = $article;
         $this->follower = $follower;
         $this->user = $user;
         $this->bookmark =  $bookmark;
+        $this->tag = $tag;
     }
     public function getLatestArticle($page){
         $perpage = 20;
@@ -73,6 +79,57 @@ class ArticleService
         $sortedArticles = $articles->sortByDesc('created_at');
         $paginateArticles = $this->paginate($sortedArticles,$perPage, $page);
         return ArticleInfoResource::collection($paginateArticles);
+    }
+
+    public function createArticle(Request $request)
+    {
+        $request->validate([
+            'title'=> 'required|string',
+            'tags'=>'required|array',
+            'tags.*'=>[
+                'numeric',
+                'min: -9223372063854775808',
+                'max: 9223372063854775808',
+                'exists:tags,tag_id'
+            ],
+            'privacy_id'=>'required'
+        ]);
+        $user = Auth::user();
+        $article = new Article();
+        $article -> title = $request -> title;
+        $article -> content = $request -> content;
+        $article -> user_id = $user->user_id;
+        $article -> privacy_id = $request -> privacy_id;
+        // neu chon dat lich thi se them truong published_at chi thoi gian bai viet duoc phat hanh
+        if($request->privacy_id == 2)
+        {
+            $article -> published_at = $request -> published_at;
+        }
+        $article -> slug = Str::slug($request->title);
+        $article -> address_url = Str::slug($request->title) . '/' . rand(10000,999999999999);
+        $article->save();
+
+        // sau khi luu bai viet se tang article ben use
+        $user->increment('article');
+        // luu vao bang trung gian
+        $article->tags()->attach($request->tags);
+        foreach($request->tags as $tagId)
+        {
+            $tag = $this->tag->find($tagId);
+            $tag->increment('articles');
+        }
+        $articleResource = new ArticleInfoResource($article);
+        return $articleResource;
+    }
+    public function updateArticle(Request $request,Article $article)
+    {
+        $article -> update($request->all());
+        $articleResource = new ArticleInfoResource($article);
+        return $articleResource;
+    }
+    public function findArticleById($articleId)
+    {
+        return $this->article->findOrFail($articleId);
     }
 
     //////////

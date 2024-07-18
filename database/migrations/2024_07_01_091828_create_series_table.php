@@ -19,7 +19,7 @@ return new class extends Migration
             // quyen rieng tu
             // $table->enum('privacy',['public','private','anyone','schedule'])->default('public');
             // so luong bai viet trong serue nay
-            $table->integer('articles');
+            $table->integer('articles')->default(0);
             // viet tat cho title
             $table->string('slug');
             $table->string('address_url');

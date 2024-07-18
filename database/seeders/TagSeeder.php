@@ -14,9 +14,9 @@ class TagSeeder extends Seeder
     public function run(): void
     {
 
-        // Tag::factory()
-        // ->count(30)
-        // ->create();
+        Tag::factory()
+        ->count(30)
+        ->create();
 
         Tag::create(['tagname' => "Editor's Choice"]);
         Tag::create(['tagname' => 'Trending']);

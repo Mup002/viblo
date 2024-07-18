@@ -24,22 +24,29 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('admin/getUsers', [UserController::class, 'getAllUser'])
-        ->middleware('permission:users-all|users-view');
+        ->middleware('check.token.expiration','permission:users-all|users-view');
 
     Route::get('user/getArticlesByFollowers', [ArticleController::class, 'getArticleByFollower'])
-        ->middleware('permission:users-all|users-view');
+        ->middleware('check.token.expiration','permission:users-all|users-view');
 
     Route::post('user/follows', [FollowerController::class, 'updateFollow'])
-        ->middleware('permission:users-all|users-edit');
+        ->middleware('check.token.expiration','permission:users-all|users-edit');
 
     Route::get('user/bookmarks', [ArticleController::class, 'getArticleByBookmark'])
-        ->middleware('permission:users-all|users-view')->name('users.bookmarks');
+        ->middleware('check.token.expiration','permission:users-all|users-view')->name('users.bookmarks');
 
     Route::post('user/updateBookmark', [BookmarkController::class, 'updateBookmark'])
-        ->middleware('permission:users-all|users-edit');
+        ->middleware('check.token.expiration','permission:users-all|users-edit');
 
-    Route::get('user/privacies', [PrivacyController::class, 'getPrivacies'])
-        ->middleware('permission:users-all|users-view');
+    // Route::get('user/privacies', [PrivacyController::class, 'getPrivacies'])
+    //     ->middleware('check.token.expiration','permission:users-all|users-view');
+    Route::post('user/create/article',[ArticleController::class,'createArticleByUser'])
+        ->middleware('check.token.expiration','permission:users-all|users-create');
+
+    Route::put('user/upateArticle/{articleId}',[ArticleController::class,'updateArticle'])
+        ->middleware('check.token.expiration','permission:users-all|users-edit');
+
+    Route::post('logout',[AuthController::class,'logout']);
 });
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
@@ -48,6 +55,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     // Route::get('users/getAll', ['uses' => 'UserController@getAllUser']);
     Route::post('login', ['uses' => 'AuthController@login']);
     Route::post('register', ['uses' => 'AuthController@register']);
+    
     //article
     Route::get('article/getLatestArticles', ['uses' => 'ArticleController@getLatestArticle']);
     Route::get('article/getArticlesByTagId', ['uses' => 'ArticleController@getArticlesByTagId']);
@@ -57,4 +65,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
 
     //serie
     Route::get('series/getSeriesByPage', ['uses' => 'SerieController@getAllSerieByPage']);
+    Route::get('privacies/all',['uses'=>'PrivacyController@getAll']);
+    Route::post('check',['uses'=>'AuthController@checkToken']);
 });

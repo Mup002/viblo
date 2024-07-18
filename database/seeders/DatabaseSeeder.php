@@ -11,21 +11,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this -> call([
-            // RoleSeeder::class
-            UserSeeder::class
-            // TagSeeder::class
+            // RoleSeeder::class,
+            // TagSeeder::class,
+            // PermissionSeeder::class,
+            PermissionRole::class,
+            // UserSeeder::class,
+            // UserRoleSeeder::class,
+
             // ArticleTagSeeder::class,
             // TagQuestionSeeder::class,
             // UpdateUrlUser::class,
             // SerieTagSeeder::class,
-            // UpdateTagArticle::class
-            // UserRoleSeeder::class
-            // PermissionSeeder::class
-            // PermissionRole::class
-            // FollowerSeeder::class
-            // BookmarkSeeder::class
-            // PrivacySeeder::class
-            // ArticlePrivacySeeder::class
+            // FollowerSeeder::class,
+            // BookmarkSeeder::class,
+            // PrivacySeeder::class,
+            // UpdateUserSeeder::class,
+            // UpdateTagSeeder::class,
+
         ]);
     }
 }

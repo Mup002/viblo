@@ -10,6 +10,13 @@ class Article extends Model
     use HasFactory;
     public $timestamp = true;
     protected $primaryKey = 'article_id';
+    protected $fillable = [
+        'title',
+        'content',
+        'is_publish',
+        'is_accept',
+        'published_at',
+    ];
     public function bookmarks(){
         return $this->hasMany(Bookmark::class);
     }

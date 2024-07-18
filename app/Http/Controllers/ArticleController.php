@@ -82,4 +82,25 @@ class ArticleController extends Controller
         return response()->json($rs,200);
     }
 
+    public function createArticleByUser(Request $request)
+    {
+        $this->authorize('create-article');
+        return response()->json($this->articleService->createArticle($request));
+    }
+
+    public function updateArticle(Request $request,$articleId)
+    {
+        $article = $this->articleService->findArticleById($articleId);
+        $this->authorize('delete-update-article', $article);
+        if($request->has('is_publish'))
+        {
+            $this->authorize('publish-update', $article);
+        }
+        if($request->has('is_accept'))
+        {
+            $this->authorize('accept-update', $article);
+        }
+        return response()->json($this->articleService->updateArticle($request,$article));
+    }
+
 }

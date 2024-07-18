@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('user_id')->primaryKey();
-            $table->bigInteger('role_id');
+            // $table->bigInteger('role_id');
             //  ten hien thi
             $table->string('display_name')->nullable();
             $table->string('date_of_birth')->nullable();

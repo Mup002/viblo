@@ -23,7 +23,7 @@ class PermissionRole extends Seeder
     {
         //
         $permissions = $this->permission->whereBetween('permission_id',[2,5])->get();
-        $role =  $this->role->find(1);
+        $role =  $this->role->find(2);
 
         foreach($permissions as $permissions)
         {
