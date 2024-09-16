@@ -35,6 +35,7 @@ return new class extends Migration
             $table->boolean('is_accept')->default(false);
             // duong dan dan toi bai viet nay
             $table->string('address_url')->nullable();
+            $table->boolean('is_spam')->default(0);
             $table->timestamps();
         });
     }

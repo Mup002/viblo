@@ -16,6 +16,8 @@ class Article extends Model
         'is_publish',
         'is_accept',
         'published_at',
+        'is_spam',
+        'privacy_id'
     ];
     public function bookmarks(){
         return $this->hasMany(Bookmark::class);

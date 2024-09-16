@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+      
     ];
 
     /**
@@ -55,6 +56,8 @@ class Kernel extends HttpKernel
     protected $middlewareAliases = [
         // 'role' => \App\Http\Middleware\CheckUserRole::class,
         'permission' => \App\Http\Middleware\EnsureUserHasPermission::class,
+        'check.auth' => \App\Http\Middleware\CheckRequestFrom::class,
+        'check.cookie'=> \App\Http\Middleware\AddAuthTokenHeader::class,
         'check.token.expiration'=> \App\Http\Middleware\CheckTokenExpiration::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

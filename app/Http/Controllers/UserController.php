@@ -23,4 +23,7 @@ class UserController extends Controller
         }
         return response()->json($result,$result['status']);
     }
+    public function getProfile($id){
+        return response()->json($this->userService->profile($id));
+    }
 }

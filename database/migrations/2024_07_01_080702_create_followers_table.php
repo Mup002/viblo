@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             // id cua nguoi A
             $table->bigInteger('user_id');
-            // id cua nhung nguoi follow nguoi A
+            // id cua nhung nguoi A follow 
             $table->bigInteger('follower_id');
             $table->timestamps();
         });

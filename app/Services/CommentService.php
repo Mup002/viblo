@@ -25,6 +25,7 @@ class CommentService
         $request->merge(['only_one' => 'dummy_value']);
         $validatedData = $request->validate([       
             'reply_to' => 'numeric',    
+            'author_comment_root' => 'numeric',
             'content' => 'required|string',
             'article_id' => ['sometimes', 'numeric'],
             'question_id' => ['sometimes', 'numeric'],
@@ -35,6 +36,7 @@ class CommentService
         $cmt->content = $validatedData['content'];
         if(array_key_exists('reply_to',$validatedData)){
             $cmt->cmtreply_id = $validatedData['reply_to'];
+            $cmt->author_comment_root = $validatedData['author_comment_root'];
         }
         if(array_key_exists('article_id',$validatedData)){
             $article = $this->article->find($validatedData['article_id']);
@@ -86,7 +88,7 @@ class CommentService
             $article = $this->article->findOrFail($validatedData['article_id']);
             $cmts = collect();
             foreach($article->comments as $cmt){
-                if($cmt->is_publish == 1)
+                if($cmt->is_publish == 1 && $cmt->cmtreply_id == 0)
                 {
                     $cmts -> push($cmt);
                 }

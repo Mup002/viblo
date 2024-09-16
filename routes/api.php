@@ -20,61 +20,92 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-// Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
-//     Route::post('login', [AuthController::class, 'login']);
-// });
 
+// 'check.cookie',
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('admin/getUsers', [UserController::class, 'getAllUser'])
-        ->middleware('check.token.expiration','permission:users-all|users-view');
+    Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::get('user/getArticlesByFollowers', [ArticleController::class, 'getArticleByFollower'])
-        ->middleware('check.token.expiration','permission:users-all|users-view');
+    //admin
+    Route::get('admin-management/users', [UserController::class, 'getAllUser'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-view');
 
-    Route::post('user/follows', [FollowerController::class, 'updateFollow'])
-        ->middleware('check.token.expiration','permission:users-all|users-edit');
+    //user-article
+    Route::get('articles-management/users/followers', [ArticleController::class, 'getArticleByFollower'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-view');
 
-    Route::get('user/bookmarks', [ArticleController::class, 'getArticleByBookmark'])
-        ->middleware('check.token.expiration','permission:users-all|users-view')->name('users.bookmarks');
+    Route::get('articles-management/users/bookmarks', [ArticleController::class, 'getArticleByBookmark'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-view')->name('users.bookmarks');
 
-    Route::post('user/updateBookmark', [BookmarkController::class, 'updateBookmark'])
-        ->middleware('check.token.expiration','permission:users-all|users-edit');
+    Route::post('users/articles', [ArticleController::class, 'createArticleByUser'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-create');
 
-    Route::post('user/create/article',[ArticleController::class,'createArticleByUser'])
-        ->middleware('check.token.expiration','permission:users-all|users-create');
+    Route::put('users/articles/{articleId}', [ArticleController::class, 'updateArticle'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-edit');
 
-    Route::put('user/upateArticle/{articleId}',[ArticleController::class,'updateArticle'])
-        ->middleware('check.token.expiration','permission:users-all|users-edit');
-
-    Route::post('cmt/create',[CommentController::class,'createCmt'])
-        ->middleware('check.token.expiration','permission:users-all|users-create');
-
-    Route::put('cmt/update',[CommentController::class,'editCmt'])
-        ->middleware('check.token.expiration','permission:users-all|users-edit');
-    Route::post('logout',[AuthController::class,'logout']);
+    Route::get('users/articles/{address_url}', [ArticleController::class, 'getArticleAuth'])
+        ->middleware('check.token.expiration','permission:users-edit');
+    //user-other
+    Route::put('comments', [CommentController::class, 'editCmt'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-edit');
+    Route::post('users/follows', [FollowerController::class, 'updateFollow'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-edit');
+    Route::post('comments', [CommentController::class, 'createCmt'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-create');
+    Route::post('users/bookmarks', [BookmarkController::class, 'updateBookmark'])
+        ->middleware('check.token.expiration', 'permission:users-all|users-edit');
 });
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
-
     //user
-    // Route::get('users/getAll', ['uses' => 'UserController@getAllUser']);
-    Route::post('login', ['uses' => 'AuthController@login']);
+    Route::get('/profile/{id}',['uses'=>'UserController@getProfile']);
+    //auth
+    Route::post('login', ['uses' => 'AuthController@login'])->name('login');
     Route::post('register', ['uses' => 'AuthController@register']);
-    
+    // articles-management/users/followers
     //article
-    Route::get('article/getLatestArticles', ['uses' => 'ArticleController@getLatestArticle']);
-    Route::get('article/getArticlesByTagId', ['uses' => 'ArticleController@getArticlesByTagId']);
-    Route::get('article/{address_url}',['uses'=>'ArticleController@getArticle']);
+    Route::get('articles', ['uses' => 'ArticleController@getLatestArticle']);
+    Route::get('articles/tags', ['uses' => 'ArticleController@getArticlesByTagId']);
+    Route::get('articles/{address_url}', ['uses' => 'ArticleController@getArticle']);
+    Route::get('articles/author-relate/{url}',['uses'=>'ArticleController@getaArticleRelateByAuthor']);
+    Route::get('articles/tags/{id}',['uses'=>'ArticleController@getArticleByTag']);
+    Route::get('articles/relate/{url}', ['uses'=>'ArticleController@getArticleRelate']);
+    Route::get('articles/author/{id}',['uses'=>'ArticleController@getArticlesByAuthor']);
 
     //question
-    Route::get('question/getThreeLatestQuestions', ['uses' => 'QuestionController@getThreeQuestionsLatest']);
-
+    Route::get('questions/threeLatest', ['uses' => 'QuestionController@getThreeQuestionsLatest']);
+    Route::get('questions/author/{id}',['uses'=>'QuestionController@getQuestionByAuthor']);
+    
     //serie
-    Route::get('series/getSeriesByPage', ['uses' => 'SerieController@getAllSerieByPage']);
-    Route::get('privacies/all',['uses'=>'PrivacyController@getAll']);
-    Route::post('check',['uses'=>'AuthController@checkToken']);
-
+    Route::get('series', ['uses' => 'SerieController@getAllSerieByPage']);
+    Route::get('privacies', ['uses' => 'PrivacyController@getAll']);
+    Route::post('check', ['uses' => 'AuthController@checkToken']);
 
     // comment
-    Route::get('comment/all',['uses'=>'CommentController@allCmt']);
+    Route::get('comments', ['uses' => 'CommentController@allCmt']);
+
+    Route::post('mail/send', ['uses' => 'MailController@sendMail']);
+
+    //tag
+    Route::get('tags', ['uses' => 'TagController@findTags']);
+    //verify
+    Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify');
+
+    ///test
+    Route::get('/test-email', function () {
+        Mail::raw('Test email body', function ($message) {
+            $message->to('bmv.buiminhvu@gmail.com')
+                ->subject('Test Email');
+        });
+
+        return 'Email sent';
+    });
+
+    Route::get('/test-redis', function () {
+        try {
+            \Illuminate\Support\Facades\Redis::set('field1', 'value1');
+            return \Illuminate\Support\Facades\Redis::get('field1');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    });
 });

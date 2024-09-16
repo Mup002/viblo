@@ -7,6 +7,7 @@ class CheckTokenExpiration
 {
     public function handle(Request $request, Closure $next)
     {
+        logger("check token : start");
         $token = $request->bearerToken();
         if($token)
         {
@@ -16,6 +17,7 @@ class CheckTokenExpiration
                 return response()->json(['message'=>'token has expired'],401);
             }
         }
+        logger("check token : done");
         return $next($request);
     }
     

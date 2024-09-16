@@ -46,7 +46,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'mysql'),
+            'host' => env('DB_HOST', 'viblo-mysql-1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'viblo'),
             'username' => env('DB_USERNAME', 'root'),

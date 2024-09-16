@@ -29,7 +29,10 @@ class DatabaseSeeder extends Seeder
             // UpdateTagSeeder::class,
 
             // CommentSeeder::class,
-            UpdateUser::class
+            // UpdateUser::class
+
+            // UpdateUrlArticle::class,
+            QuestionSeeder::class
         ]);
     }
 }
